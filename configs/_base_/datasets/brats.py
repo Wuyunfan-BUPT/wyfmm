@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDataset'
-data_root = '/kaggle/input/brats'
+data_root = 'data/brats'
 img_norm_cfg = dict(
     mean=[27.753, 33.037, 27.08], std=[47.713, 57.014, 46.105], to_rgb=True)
 crop_size = (224, 224)
