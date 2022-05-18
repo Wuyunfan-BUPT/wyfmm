@@ -854,7 +854,7 @@ class SwinConvUnet(BaseModule):
             load_state_dict(self, state_dict, strict=False, logger=logger)
 
     def forward(self, x):  # (1,3,512,683)
-        x = PadingImage(x, self.multiple)
+        #x = PadingImage(x, self.multiple)
         x, hw_shape = self.patch_embed(x)  # x=(1,21888,96), (128,171)
 
         if self.use_abs_pos_embed:
