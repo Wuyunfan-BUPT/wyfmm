@@ -115,6 +115,7 @@ mytestModel
 *.pkl.json
 *.log.json
 work_dirs/
+checkpoints/
 mmseg/.mim
 
 # Pytorch
