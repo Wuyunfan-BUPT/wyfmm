@@ -116,6 +116,7 @@ mytestModel
 *.log.json
 work_dirs/
 checkpoints/
+mytools/
 mmseg/.mim
 
 # Pytorch

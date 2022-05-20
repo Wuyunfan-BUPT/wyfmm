@@ -5,15 +5,15 @@ _base_ = [
 model = dict(
     pretrained='./work_dirs/vanunet/latest.pth',
     backbone=dict(
-        type='vanunet_tiny',
+        type='vanunet_small',
         style='pytorch'
 ),
     decode_head=dict(
-        in_channels=[32, 64, 160, 256],
+        in_channels=[64, 128, 320, 512],
         num_classes=4
     ),
     auxiliary_head=dict(
-        in_channels=160,
+        in_channels=320,
         num_classes=4
     ))
 
