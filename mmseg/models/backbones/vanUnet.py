@@ -8,6 +8,7 @@ from mmseg.utils import get_root_logger
 from mmcv.runner import load_checkpoint,ModuleList
 from ..utils import UpConvBlock
 from mmcv.cnn import ConvModule
+import cv2
 
 import math
 
@@ -176,33 +177,8 @@ class OverlapPatchEmbed(nn.Module):
 
 
 class BasicConvBlock(nn.Module):
-    """Basic convolutional block for UNet.
-
-    This module consists of several plain convolutional layers.
-
-    Args:
-        in_channels (int): Number of input channels.
-        out_channels (int): Number of output channels.
-        num_convs (int): Number of convolutional layers. Default: 2.
-        stride (int): Whether use stride convolution to downsample
-            the input feature map. If stride=2, it only uses stride convolution
-            in the first convolutional layer to downsample the input feature
-            map. Options are 1 or 2. Default: 1.
-        dilation (int): Whether use dilated convolution to expand the
-            receptive field. Set dilation rate of each convolutional layer and
-            the dilation rate of the first convolutional layer is always 1.
-            Default: 1.
-        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
-            memory while slowing down the training speed. Default: False.
-        conv_cfg (dict | None): Config dict for convolution layer.
-            Default: None.
-        norm_cfg (dict | None): Config dict for normalization layer.
-            Default: dict(type='BN').
-        act_cfg (dict | None): Config dict for activation layer in ConvModule.
-            Default: dict(type='ReLU').
-        dcn (bool): Use deformable convolution in convolutional layer or not.
-            Default: None.
-        plugins (dict): plugins for convolutional layers. Default: None.
+    """
+        Basic convolutional block for upsample.
     """
 
     def __init__(self,
@@ -334,7 +310,6 @@ class VANUnet(nn.Module):
     #def forward_features(self, x):#(4,4,224,224)
         B = x.shape[0] #4
         encoder_outs = []
-
         for i in range(self.num_stages):#0,1,2,3
             patch_embed = getattr(self, f"patch_embed{i + 1}")
             block = getattr(self, f"block{i + 1}")
@@ -347,6 +322,7 @@ class VANUnet(nn.Module):
             encoder_outs.append(x)
 
         decoder_outs = []
+
         decoder_outs.append(x)
         for i in reversed(range(len(self.upBlock))):
             x = self.upBlock[i](encoder_outs[i], x)

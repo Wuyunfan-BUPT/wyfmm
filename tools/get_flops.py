@@ -31,7 +31,7 @@ def main():
         input_shape = (3, ) + tuple(args.shape)
     else:
         raise ValueError('invalid input shape')
-
+    #input_shape = (4,224,224)
     cfg = Config.fromfile(args.config)
     cfg.model.pretrained = None
     model = build_segmentor(

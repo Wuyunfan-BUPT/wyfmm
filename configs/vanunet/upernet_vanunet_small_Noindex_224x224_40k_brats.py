@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/models/upernet_vanUnet.py', '../_base_/datasets/brats4C.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k_dice.py'
+    '../_base_/models/upernet_Noindex_vanUnet.py', '../_base_/datasets/brats4C.py',
+    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
 ]
 model = dict(
     pretrained='./work_dirs/vanunet/latest.pth',
