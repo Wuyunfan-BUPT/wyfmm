@@ -118,6 +118,7 @@ work_dirs/
 checkpoints/
 mytools/
 mmseg/.mim
+gradCam/
 
 # Pytorch
 *.pth
