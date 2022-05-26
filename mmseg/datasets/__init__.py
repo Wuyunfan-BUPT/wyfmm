@@ -20,6 +20,8 @@ from .stare import STAREDataset
 from .voc import PascalVOCDataset
 from .brats import BratsDataset
 from .brats4C import BratsDataset4C
+from .bratsIndiv4C import BratsDatasetIndiv4C
+from .bratsCom4C import BratsDatasetCom4C
 
 __all__ = [
     'CustomDataset', 'build_dataloader', 'ConcatDataset', 'RepeatDataset',
@@ -28,5 +30,6 @@ __all__ = [
     'PascalContextDataset59', 'ChaseDB1Dataset', 'DRIVEDataset', 'HRFDataset',
     'STAREDataset', 'DarkZurichDataset', 'NightDrivingDataset',
     'COCOStuffDataset', 'LoveDADataset', 'MultiImageMixDataset',
-    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'BratsDataset', 'BratsDataset4C'
+    'iSAIDDataset', 'ISPRSDataset', 'PotsdamDataset', 'BratsDataset', 'BratsDataset4C',
+    'BratsDatasetIndiv4C', 'BratsDatasetCom4C'
 ]
