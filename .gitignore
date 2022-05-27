@@ -119,6 +119,7 @@ checkpoints/
 mytools/
 mmseg/.mim
 gradCam/
+logTest/
 
 # Pytorch
 *.pth
