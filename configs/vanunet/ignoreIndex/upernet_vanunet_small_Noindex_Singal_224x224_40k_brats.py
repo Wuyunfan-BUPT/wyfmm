@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/upernet_vanUnet.py', '../_base_/datasets/bratsCombine4C.py',
+    '../_base_/models/upernet_Noindex_singal_vanUnet.py', '../_base_/datasets/bratsCombine4C.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
@@ -10,11 +10,15 @@ model = dict(
 ),
     decode_head=dict(
         in_channels=[64, 128, 320, 512],
-        num_classes=4
+        num_classes=4,
+        loss_decode=
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True),
     ),
     auxiliary_head=dict(
         in_channels=320,
-        num_classes=4
+        num_classes=4,
+        loss_decode=
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True),
     ))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
