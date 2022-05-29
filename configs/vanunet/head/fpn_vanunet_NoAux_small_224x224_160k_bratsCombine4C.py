@@ -1,22 +1,17 @@
 _base_ = [
-    '../_base_/models/upernet_vanUnet.py', '../_base_/datasets/bratsIndividual4C.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k_dice.py'
+    '../../_base_/models/vanunet/fpn_vanUnet_NoAux.py', '../../_base_/datasets/bratsCombine4C.py',
+    '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
     pretrained='./work_dirs/vanunet/latest.pth',
     backbone=dict(
         type='vanunet_small',
         style='pytorch'
-),
+    ),
     decode_head=dict(
-        in_channels=[64, 128, 320, 512],
         num_classes=4
     ),
-    auxiliary_head=dict(
-        in_channels=320,
-        num_classes=4
-    ))
-
+)
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
 optimizer = dict(_delete_=True, type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01,
                  paramwise_cfg=dict(custom_keys={
