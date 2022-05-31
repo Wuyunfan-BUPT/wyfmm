@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/models/unet_re_mri.py', '../_base_/datasets/brats4C.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_40k.py'
+    '../../_base_/models/unet_re_mri.py', '../../_base_/datasets/bratsCombine4C.py',
+    '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
     pretrained='./work_dirs/unet/latest.pth',
