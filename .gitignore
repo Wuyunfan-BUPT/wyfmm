@@ -120,6 +120,9 @@ mytools/
 mmseg/.mim
 gradCam/
 logTest/
+vanAllTestResult/
+vanAllTest/
+
 
 # Pytorch
 *.pth
