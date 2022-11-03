@@ -11,13 +11,13 @@ model = dict(
         in_channels=[64, 128, 320, 512],
         num_classes=4,
         loss_decode=[
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1,2,2,2])]
+            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[0.5,1.0,1.0,1.0])]
     ),
     auxiliary_head=dict(
         in_channels=320,
         num_classes=4,
         loss_decode=[
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1,2,2,2])]
+            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[0.5,1.0,1.0,1.0])]
 
     ))
 
