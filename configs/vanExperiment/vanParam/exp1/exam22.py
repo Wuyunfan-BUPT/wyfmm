@@ -11,17 +11,13 @@ model = dict(
         in_channels=[64, 128, 320, 512],
         num_classes=4,
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0,30.0,30.0,30.0], loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1.0,1.0,1.0,1.0], ignore_index=0, loss_weight=10.0)]
+            dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, class_weight=[1.0,1.0,1.0,1.0])]
     ),
     auxiliary_head=dict(
         in_channels=320,
         num_classes=4,
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0, 30.0, 30.0, 30.0],
-                 loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1.0, 1.0, 1.0, 1.0], ignore_index=0,
-                 loss_weight=10.0)]
+            dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, class_weight=[1.0,1.0,1.0,1.0])]
 
     ))
 
