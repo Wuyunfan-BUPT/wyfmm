@@ -10,7 +10,6 @@ model = dict(
     decode_head=dict(
         in_channels=[64, 128, 320, 512],
         num_classes=4,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0,30.0,30.0,30.0], loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1.0,1.0,1.0,1.0], ignore_index=0, loss_weight=10.0)]
@@ -18,7 +17,6 @@ model = dict(
     auxiliary_head=dict(
         in_channels=320,
         num_classes=4,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0, 30.0, 30.0, 30.0],
                  loss_weight=1.0),
