@@ -1,29 +1,28 @@
 _base_ = [
-    '../_base_/models/upernet_van.py', '../_base_/datasets/bratsCombine4C.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k_dice.py'
+    '../../../_base_/models/upernet_vanUnet.py', '../../../_base_/datasets/bratsCombine4C.py',
+    '../../../_base_/default_runtime.py', '../../../_base_/schedules/schedule_40k_dice.py'
 ]
 model = dict(
     pretrained='./work_dirs/van/latest.pth',
     backbone=dict(
-        type='van_small',
+        type='vanunet_small',
         style='pytorch'),
     decode_head=dict(
         in_channels=[64, 128, 320, 512],
         num_classes=4,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
+        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0,30.0,30.0,30.0], loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1.0,1.0,1.0,1.0], ignore_index=0, loss_weight=10.0)]
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[0.1,1.0,1.0,1.0], loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, loss_weight=3.0, avg_non_ignore=True)]
     ),
     auxiliary_head=dict(
         in_channels=320,
         num_classes=4,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
+        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[1.0, 30.0, 30.0, 30.0],
-                 loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', class_weight=[1.0, 1.0, 1.0, 1.0], ignore_index=0,
-                 loss_weight=10.0)]
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[0.1,1.0,1.0,1.0], loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, loss_weight=3.0, avg_non_ignore=True)]
+
     ))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
