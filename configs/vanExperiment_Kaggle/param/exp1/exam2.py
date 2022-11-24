@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/models/upernet_vanUnet.py', '../_base_/datasets/brats2020_kaggle.py',
-    '../_base_/default_runtime.py', '../_base_/schedules/schedule_160k_dice.py'
+    '../../../_base_/models/upernet_vanUnet.py', '../../../_base_/datasets/brats2020_kaggle.py',
+    '../../../_base_/default_runtime.py', '../../../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
     pretrained='./work_dirs/van/latest.pth',
