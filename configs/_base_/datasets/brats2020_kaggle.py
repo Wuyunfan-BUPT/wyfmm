@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDataset2020'
-data_root = '/kaggle/input/mydataset1'
+data_root = '/kaggle/input/mydataset2'
 #crop_size = (224, 224)
 crop_size = (192, 192)
 classes = ('BG', 'WT', 'TC', 'ET')

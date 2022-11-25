@@ -1,5 +1,5 @@
 _base_ = [
-    '../../../_base_/models/upernet_vanUnet.py', '../../../_base_/datasets/brats2020.py',
+    '../../../_base_/models/upernet_vanUnet.py', '../../../_base_/datasets/brats2020_kaggle.py',
     '../../../_base_/default_runtime.py', '../../../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
@@ -13,7 +13,7 @@ model = dict(
         # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice',  loss_weight=3.0)]
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]
     ),
     auxiliary_head=dict(
         in_channels=320,
