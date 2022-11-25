@@ -1,8 +1,8 @@
 # dataset settings
 dataset_type = 'BratsDataset2020'
-data_root = 'data/BratsDataset2020'
-#crop_size = (224, 224)
-crop_size = (192, 192)
+data_root = '/kaggle/input/mydataset2'
+crop_size = (224, 224)
+#crop_size = (192, 192)
 classes = ('BG', 'WT', 'TC', 'ET')
 palette = [[128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34]]
 train_pipeline = [
@@ -23,7 +23,7 @@ train_pipeline = [
 #         classes=classes,
 #         palette=palette,
 #         type=dataset_type,
-#         reduce_zero_label=True,
+#         reduce_zero_label=False,
 #         img_dir=data_root + "images/train",
 #         ann_dir=data_root + "annotations/train",
 #         pipeline=[
@@ -49,6 +49,15 @@ validation_pipeline = [
             dict(type='Collect', keys=['img'])
         ]
     )
+    #dict(type='LoadAnnotations'),
+    #dict(type='Resize', img_scale=(224,224)),
+    #dict(type='Resize', img_scale=(224,224), ratio_range=(0.5, 2.0)),
+    #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    # dict(type='RandomFlip', prob=0.5),
+
+    # dict(type='DefaultFormatBundle'),
+    #dict(type='ImageToTensor', keys=['img']),
+    # dict(type='Collect', keys=['img'])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged',imdecode_backend='tifffile'),
