@@ -9,10 +9,10 @@ train_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged',imdecode_backend='tifffile'),
     dict(type='LoadAnnotations'),
     # dict(type='RandomMosaic', prob=1),
-    dict(type='Resize', img_scale=crop_size, ratio_range=(0.5, 2.0)),
-    dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+    #dict(type='Resize', img_scale=crop_size, ratio_range=(0.5, 2.0)),
+    #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
-    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=0),
+    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg'])
 ]
@@ -23,7 +23,7 @@ train_pipeline = [
 #         classes=classes,
 #         palette=palette,
 #         type=dataset_type,
-#         reduce_zero_label=False,
+#         reduce_zero_label=True,
 #         img_dir=data_root + "images/train",
 #         ann_dir=data_root + "annotations/train",
 #         pipeline=[
@@ -42,22 +42,13 @@ validation_pipeline = [
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0],
         flip=False,
         transforms=[
-            dict(type='Resize', keep_ratio=True),
+            #dict(type='Resize', keep_ratio=True),
             dict(type='RandomFlip'),
-            dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=0),
+            dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ]
     )
-    #dict(type='LoadAnnotations'),
-    #dict(type='Resize', img_scale=(224,224)),
-    #dict(type='Resize', img_scale=(224,224), ratio_range=(0.5, 2.0)),
-    #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
-    # dict(type='RandomFlip', prob=0.5),
-
-    # dict(type='DefaultFormatBundle'),
-    #dict(type='ImageToTensor', keys=['img']),
-    # dict(type='Collect', keys=['img'])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged',imdecode_backend='tifffile'),
@@ -67,8 +58,9 @@ test_pipeline = [
         # img_ratios=[0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0],
         flip=False,
         transforms=[
-            dict(type='Resize', keep_ratio=True),
+            #dict(type='Resize', keep_ratio=True),
             dict(type='RandomFlip'),
+            dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
