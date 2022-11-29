@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDataset2020'
-data_root = '/kaggle/input/mydataset2'
+data_root = '/kaggle/input/mydataset1'
 crop_size = (224, 224)
 classes = ('BG', 'WT', 'TC', 'ET')
 palette = [[128, 128, 128], [129, 127, 38], [120, 69, 125], [53, 125, 34]]
@@ -11,7 +11,7 @@ train_pipeline = [
     #dict(type='Resize', img_scale=crop_size, ratio_range=(0.5, 2.0)),
     #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5),
-    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=255),
+    dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=0),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg'])
 ]
