@@ -5,7 +5,7 @@ _base_ = [
 model = dict(
     pretrained='./work_dirs/van/latest.pth',
     backbone=dict(
-        type='vanunet_small',
+        type='van_small',
         style='pytorch'),
     decode_head=dict(
         in_channels=[64, 128, 320, 512],
@@ -14,8 +14,8 @@ model = dict(
         # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=2.0)
-           ]
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+        ]
     ),
     auxiliary_head=dict(
         in_channels=320,
@@ -23,11 +23,9 @@ model = dict(
         ignore_index=0,
         # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            #dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce',  avg_non_ignore=True, loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=2.0)
-           ]
-
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+        ]
     ))
 
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
