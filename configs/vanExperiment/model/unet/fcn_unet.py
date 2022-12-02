@@ -10,17 +10,20 @@ model = dict(
         num_stages=5,
         ),
     decode_head=dict(
+        ignore_index=0,
         # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[0.1,1.0,1.0,1.0], loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice',  ignore_index=0, loss_weight=3.0, avg_non_ignore=True)]
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+        ]
     ),
-    auxiliary_head=dict(
-        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
-        loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[0.1, 1.0, 1.0, 1.0], loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, loss_weight=3.0, avg_non_ignore=True)]
-    ))
+    # auxiliary_head=dict(
+    #     # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
+    #     loss_decode=[
+    #         dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', class_weight=[0.1, 1.0, 1.0, 1.0], loss_weight=1.0),
+    #         dict(type='DiceLoss', loss_name='loss_dice', ignore_index=0, loss_weight=3.0, avg_non_ignore=True)]
+    # )
+)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm in backbone
 optimizer = dict(_delete_=True, type='AdamW', lr=0.00006, betas=(0.9, 0.999), weight_decay=0.01,
