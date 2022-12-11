@@ -1,5 +1,5 @@
 _base_ = [
-    '../../../_base_/models/upernet_van.py', '../../../_base_/datasets/brats2020_kaggle2.py',
+    '../../../_base_/models/fcn_van.py', '../../../_base_/datasets/bratsCombine4C.py',
     '../../../_base_/default_runtime.py', '../../../_base_/schedules/schedule_160k_dice.py'
 ]
 model = dict(
@@ -8,20 +8,9 @@ model = dict(
         type='van_small',
         style='pytorch'),
     decode_head=dict(
-        in_channels=[64, 128, 320, 512],
-        num_classes=4,
         ignore_index=0,
-        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
-        loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
-        ]
-    ),
-    auxiliary_head=dict(
-        in_channels=320,
+        in_channels=512,
         num_classes=4,
-        ignore_index=0,
-        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)

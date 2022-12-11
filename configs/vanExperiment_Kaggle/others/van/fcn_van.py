@@ -10,9 +10,10 @@ model = dict(
     decode_head=dict(
         in_channels=512,
         num_classes=4,
-        ignore_index=0,
+        # ignore_index=0,
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
+            # dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True, loss_weight=1.0),
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
         ]
     ))
