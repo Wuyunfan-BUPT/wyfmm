@@ -1,8 +1,10 @@
 # dataset settings
 dataset_type = 'BratsDatasetCom4C'
 data_root = 'data/bratsCombine4C'
+# img_norm_cfg = dict(
+#      mean=[24.371, 41.122, 30.127, 25.215], std=[44.952, 72.598, 56.065, 47.057], to_rgb=True)
 img_norm_cfg = dict(
-    mean=[24.371, 41.122, 30.127, 25.215], std=[44.952, 72.598, 56.065, 47.057], to_rgb=True)
+     mean=[0.0, 0.0, 0.0, 0.0], std=[1.0, 1.0, 1.0, 1.0], to_rgb=True)
 crop_size = (224, 224)
 train_pipeline = [
     dict(type='LoadImageFromFile', color_type='unchanged',imdecode_backend='pillow'),

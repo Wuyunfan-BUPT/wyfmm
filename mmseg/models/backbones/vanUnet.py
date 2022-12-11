@@ -393,7 +393,7 @@ class vanunet_small(VANUnet):
 class vanunet_small_P(VANUnet):
     def __init__(self, **kwargs):
         super(vanunet_small_P, self).__init__(
-            patch_size=4, embed_dims=[64, 128, 256, 512], num_heads=[2, 5, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+            patch_size=4, embed_dims=[64, 128, 256, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
             norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 4, 8, 2], sr_ratios=[8, 4, 2, 1],
             drop_rate=0.0, drop_path_rate=0.1, dec_num_convs=(2, 2, 2, 2), upsample_cfg=dict(type='InterpConv'),
             conv_norm_cfg=dict(type='BN'), conv_act_cfg=dict(type='ReLU'))
