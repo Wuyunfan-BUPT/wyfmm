@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDatasetIndiv4C'
-data_root = '/kaggle/input/bratsIndividual4C'
+data_root = '/kaggle/input/bratsindividual4c'
 # img_norm_cfg = dict(
 #     mean=[24.371, 41.122, 30.127, 25.215], std=[44.952, 72.598, 56.065, 47.057], to_rgb=True)
 img_norm_cfg = dict(
