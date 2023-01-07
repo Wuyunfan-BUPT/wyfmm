@@ -122,6 +122,8 @@ gradCam/
 logTest/
 vanAllTestResult/
 vanAllTest/
+swinTest/
+swinResult/
 
 
 # Pytorch

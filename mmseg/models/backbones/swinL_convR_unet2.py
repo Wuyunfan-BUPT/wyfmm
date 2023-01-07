@@ -551,7 +551,7 @@ def PadingImage(x, patch_size):
 
 
 @BACKBONES.register_module()
-class SwinConvUnet(BaseModule):
+class SwinConvUnet2(BaseModule):
     """Swin Transformer backbone.
 
     This backbone is the implementation of `Swin Transformer:
@@ -610,10 +610,10 @@ class SwinConvUnet(BaseModule):
                  patch_size=4,
                  window_size=7,
                  mlp_ratio=4,
-                 depths=(2, 2, 6, 2),
-                 num_heads=(3, 6, 12, 24),
-                 strides=(4, 2, 2, 2),
-                 out_indices=(0, 1, 2, 3),
+                 depths=(2, 6),
+                 num_heads=(3, 6),
+                 strides=(4, 2),
+                 out_indices=(0, 1),
                  qkv_bias=True,
                  qk_scale=None,
                  patch_norm=True,
@@ -656,7 +656,7 @@ class SwinConvUnet(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
-        super(SwinConvUnet, self).__init__(init_cfg=init_cfg)
+        super(SwinConvUnet2, self).__init__(init_cfg=init_cfg)
 
         num_layers = len(depths)
         self.out_indices = out_indices
@@ -745,16 +745,71 @@ class SwinConvUnet(BaseModule):
                     plugins=None)
 
                 self.upstages.append(upstage)
+        upstage0 = UpConvBlock(
+            conv_block=BasicConvBlock,
+            in_channels=256,
+            skip_channels=192,
+            out_channels=192,
+            num_convs=dec_num_convs[2],
+            stride=1,
+            dilation=dec_dilations[2],
+            with_cp=with_cp,
+            conv_cfg=conv_cfg,
+            norm_cfg=conv_norm_cfg,
+            act_cfg=conv_act_cfg,
+            upsample_cfg=upsample_cfg,
+            dcn=None,
+            plugins=None)
+        self.upstages.append(upstage0)
 
-        self.conv_block = BasicConvBlock(in_channels=768, out_channels=768)
-        self.conv_block1 = BasicConvBlock(in_channels=96, out_channels=96)
-        self.upSample = build_upsample_layer(
-                cfg=upsample_cfg,
-                in_channels=96,
-                out_channels=64,
-                with_cp=with_cp,
-                norm_cfg=conv_norm_cfg,
-                act_cfg=conv_act_cfg)
+        upstage1 = UpConvBlock(
+                    conv_block=BasicConvBlock,
+                    in_channels=512,
+                    skip_channels=256,
+                    out_channels=256,
+                    num_convs=dec_num_convs[3],
+                    stride=1,
+                    dilation=dec_dilations[3],
+                    with_cp=with_cp,
+                    conv_cfg=conv_cfg,
+                    norm_cfg=conv_norm_cfg,
+                    act_cfg=conv_act_cfg,
+                    upsample_cfg=upsample_cfg,
+                    dcn=None,
+                    plugins=None)
+        self.upstages.append(upstage1)
+        # upstage2 = UpConvBlock(
+        #     conv_block=BasicConvBlock,
+        #     in_channels=1024,
+        #     skip_channels=512,
+        #     out_channels=512,
+        #     num_convs=dec_num_convs[3],
+        #     stride=1,
+        #     dilation=dec_dilations[3],
+        #     with_cp=with_cp,
+        #     conv_cfg=conv_cfg,
+        #     norm_cfg=conv_norm_cfg,
+        #     act_cfg=conv_act_cfg,
+        #     upsample_cfg=upsample_cfg,
+        #     dcn=None,
+        #     plugins=None)
+        # self.upstages.append(upstage2)
+
+
+
+        self.downsample = nn.MaxPool2d(kernel_size=2)
+        self.conv_block3 = BasicConvBlock(in_channels=192, out_channels=256)
+        self.conv_block4 = BasicConvBlock(in_channels=256, out_channels=512)
+        # self.conv_block5 = BasicConvBlock(in_channels=512, out_channels=1024)
+        self.conv_block_final = BasicConvBlock(in_channels=96, out_channels=64)
+        self.upSample_final = build_upsample_layer(
+            cfg=upsample_cfg,
+            in_channels=64,
+            out_channels=64,
+            with_cp=with_cp,
+            norm_cfg=conv_norm_cfg,
+            act_cfg=conv_act_cfg)
+
 
         self.num_features = [int(embed_dims * 2 ** i) for i in range(num_layers)]
         # Add a norm layer for each output
@@ -765,7 +820,7 @@ class SwinConvUnet(BaseModule):
 
     def train(self, mode=True):
         """Convert the model into training mode while keep layers freezed."""
-        super(SwinConvUnet, self).train(mode)
+        super(SwinConvUnet2, self).train(mode)
         self._freeze_stages()
 
     def _freeze_stages(self):
@@ -875,28 +930,32 @@ class SwinConvUnet(BaseModule):
         encodrouts = []
         for i, stage in enumerate(self.stages):
             x, hw_shape, out, out_hw_shape = stage(x, hw_shape)  # x:(1,5504,192),hw=(64,86); x=(1,1376,384),
-            if i in self.out_indices:
+            if i in self.out_indices:#
                 norm_layer = getattr(self, f'norm{i}')
                 out = norm_layer(out)  # (1,21888,96),
                 out = out.view(-1, *out_hw_shape,
                                self.num_features[i]).permute(0, 3, 1,
                                                              2).contiguous()
-                encodrouts.append(out)  # (1,96,128,171)
+                encodrouts.append(out)  # 【96,56,56】[192,28,28],[2,384,14,14]
 
+        x = self.downsample(encodrouts[-1])  # [384,7,7]
+        x = self.conv_block3(x)
+        encodrouts.append(x)
+        x = self.downsample(x)  # [384,7,7]
+        x = self.conv_block4(x)# [384,14,14]
+        # encodrouts.append(x)
+        # x = self.downsample(x)  # [384,7,7]
+        # x = self.conv_block5(x)
         outs = []
-        x = encodrouts[-1]
-        x = self.conv_block(x)
         outs.append(x)
         for i in reversed(range(len(self.upstages))):
             x = self.upstages[i](encodrouts[i], x)
             if i !=0:
                 outs.insert(0, x)
             else:
-                x = self.conv_block1(x)
-                x = self.upSample(x)
+                x = self.conv_block_final(x)
+                x = self.upSample_final(x)
                 outs.insert(0, x)
-
-        x = self.upstages[len(self.upstages)-1]
 
 
         return outs
