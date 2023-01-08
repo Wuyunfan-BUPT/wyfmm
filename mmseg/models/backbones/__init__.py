@@ -27,11 +27,13 @@ from .unet_reverse import UNet_re
 from .van import VAN
 from .swinL_convR_unet1 import SwinConvUnet1
 from .swinL_convR_unet2 import SwinConvUnet2
-
+from .swin_conv1 import SwinTransformer1
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
     'VisionTransformer', 'SwinTransformer', 'MixVisionTransformer',
     'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
-    'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE', 'SwinConvUnet', 'convSwinUnet', 'VANUnet', 'UNet_re', 'VAN', 'SwinConvUnet1', 'SwinConvUnet2'
+    'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE', 'SwinConvUnet',
+    'convSwinUnet', 'VANUnet', 'UNet_re', 'VAN', 'SwinConvUnet1', 'SwinConvUnet2',
+    'SwinTransformer1'
 ]
