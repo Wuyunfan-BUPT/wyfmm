@@ -1,5 +1,5 @@
 _base_ = [
-    '../../_base_/models/fcn_SwinConvUnet1_!.py', '../../_base_/datasets/bratsIndividual4C_kaggle.py',
+    '../../_base_/models/fcn_SwinConvUnet1_1.py', '../../_base_/datasets/bratsIndividual4C_kaggle.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
 ]
 checkpoint_file = r'C:\work\pyCharm\swinTransformer\swin_tiny_patch4_window7_224.pth'  # noqa
