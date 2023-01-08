@@ -19,7 +19,7 @@ from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils.embed import PatchEmbed, PatchMerging
 from mmcv.cnn import ConvModule
-from mmseg.utils import UpConvBlock
+from ..utils import UpConvBlock
 from mmcv.cnn import build_upsample_layer
 
 
