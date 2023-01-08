@@ -885,7 +885,7 @@ class SwinConvUnet(BaseModule):
 
         outs = []
         x = encodrouts[-1]
-        x = self.conv_block(x)
+        # x = self.conv_block(x)
         outs.append(x)
         for i in reversed(range(len(self.upstages))):
             x = self.upstages[i](encodrouts[i], x)
