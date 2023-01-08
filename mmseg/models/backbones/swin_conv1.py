@@ -18,6 +18,81 @@ from mmcv.utils import to_2tuple
 from ...utils import get_root_logger
 from ..builder import BACKBONES
 from ..utils.embed import PatchEmbed, PatchMerging
+from mmcv.cnn import ConvModule
+
+
+class BasicConvBlock(nn.Module):
+    """Basic convolutional block for UNet.
+
+    This module consists of several plain convolutional layers.
+
+    Args:
+        in_channels (int): Number of input channels.
+        out_channels (int): Number of output channels.
+        num_convs (int): Number of convolutional layers. Default: 2.
+        stride (int): Whether use stride convolution to downsample
+            the input feature map. If stride=2, it only uses stride convolution
+            in the first convolutional layer to downsample the input feature
+            map. Options are 1 or 2. Default: 1.
+        dilation (int): Whether use dilated convolution to expand the
+            receptive field. Set dilation rate of each convolutional layer and
+            the dilation rate of the first convolutional layer is always 1.
+            Default: 1.
+        with_cp (bool): Use checkpoint or not. Using checkpoint will save some
+            memory while slowing down the training speed. Default: False.
+        conv_cfg (dict | None): Config dict for convolution layer.
+            Default: None.
+        norm_cfg (dict | None): Config dict for normalization layer.
+            Default: dict(type='BN').
+        act_cfg (dict | None): Config dict for activation layer in ConvModule.
+            Default: dict(type='ReLU').
+        dcn (bool): Use deformable convolution in convolutional layer or not.
+            Default: None.
+        plugins (dict): plugins for convolutional layers. Default: None.
+    """
+
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 num_convs=2,
+                 stride=1,
+                 dilation=1,
+                 with_cp=False,
+                 conv_cfg=None,
+                 norm_cfg=dict(type='BN'),
+                 act_cfg=dict(type='ReLU'),
+                 dcn=None,
+                 plugins=None):
+        super(BasicConvBlock, self).__init__()
+        assert dcn is None, 'Not implemented yet.'
+        assert plugins is None, 'Not implemented yet.'
+
+        self.with_cp = with_cp
+        convs = []
+        for i in range(num_convs):
+            convs.append(
+                ConvModule(
+                    in_channels=in_channels if i == 0 else out_channels,
+                    out_channels=out_channels,
+                    kernel_size=3,
+                    stride=stride if i == 0 else 1,
+                    dilation=1 if i == 0 else dilation,
+                    padding=1 if i == 0 else dilation,
+                    conv_cfg=conv_cfg,
+                    norm_cfg=norm_cfg,
+                    act_cfg=act_cfg))
+
+        self.convs = nn.Sequential(*convs)
+
+    def forward(self, x):
+        """Forward function."""
+
+        if self.with_cp and x.requires_grad:
+            out = cp.checkpoint(self.convs, x)
+        else:
+            out = self.convs(x)
+        return out
+
 
 
 class WindowMSA(BaseModule):
@@ -463,7 +538,7 @@ class SwinBlockSequence(BaseModule):
 
 
 @BACKBONES.register_module()
-class SwinTransformer(BaseModule):
+class SwinTransformer1(BaseModule):
     """Swin Transformer backbone.
 
     This backbone is the implementation of `Swin Transformer:
@@ -561,7 +636,7 @@ class SwinTransformer(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
-        super(SwinTransformer, self).__init__(init_cfg=init_cfg)
+        super(SwinTransformer1, self).__init__(init_cfg=init_cfg)
 
         num_layers = len(depths)
         self.out_indices = out_indices
@@ -628,6 +703,8 @@ class SwinTransformer(BaseModule):
                 in_channels = downsample.out_channels
 
         self.num_features = [int(embed_dims * 2**i) for i in range(num_layers)]
+        self.downsample = nn.MaxPool2d(kernel_size=2)
+        self.conv_block = BasicConvBlock(in_channels=384, out_channels=768)
         # Add a norm layer for each output
         for i in out_indices:
             layer = build_norm_layer(norm_cfg, self.num_features[i])[1]
@@ -636,7 +713,7 @@ class SwinTransformer(BaseModule):
 
     def train(self, mode=True):
         """Convert the model into training mode while keep layers freezed."""
-        super(SwinTransformer, self).train(mode)
+        super(SwinTransformer1, self).train(mode)
         self._freeze_stages()
 
     def _freeze_stages(self):
@@ -752,5 +829,9 @@ class SwinTransformer(BaseModule):
                                self.num_features[i]).permute(0, 3, 1,
                                                              2).contiguous()
                 outs.append(out)
+        xout = self.downsample(outs[-1])  # [384,7,7]
+
+        xout = self.conv_block(xout)
+        outs.append(xout)
 
         return outs
