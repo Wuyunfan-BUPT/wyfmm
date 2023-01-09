@@ -35,7 +35,7 @@ model = dict(
         type='FCNHead',
         in_channels=96,
         in_index=0,
-        channels=128,
+        channels=256,
         num_convs=1,
         concat_input=False,
         dropout_ratio=0.1,
@@ -44,7 +44,7 @@ model = dict(
         align_corners=False,
         #sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
+            # dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
     # model training and testing settings
     train_cfg=dict(),
