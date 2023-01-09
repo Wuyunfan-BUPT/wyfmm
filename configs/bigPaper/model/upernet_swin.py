@@ -2,6 +2,7 @@ _base_ = [
     '../../_base_/models/upernet_swin.py', '../../_base_/datasets/bratsIndividual4C.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
 ]
+# '../../_base_/datasets/bratsIndividual4C.py',
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_tiny_patch4_window7_224_20220317-1cdeb081.pth'  # noqa
 model = dict(
     backbone=dict(
@@ -21,7 +22,7 @@ model = dict(
 optimizer = dict(
     _delete_=True,
     type='AdamW',
-    lr=0.00006,
+    lr=0.0006,
     betas=(0.9, 0.999),
     weight_decay=0.01,
     paramwise_cfg=dict(
@@ -42,4 +43,4 @@ lr_config = dict(
     by_epoch=False)
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=2)
+data = dict(samples_per_gpu=8)
