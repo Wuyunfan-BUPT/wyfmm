@@ -42,10 +42,12 @@ model = dict(
         num_classes=4,
         norm_cfg=norm_cfg,
         align_corners=False,
+        ignore_index=0,
         #sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
         loss_decode=[
-            # dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
-            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', avg_non_ignore=True)
+            # dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+        ]),
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))
