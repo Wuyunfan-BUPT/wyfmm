@@ -124,7 +124,7 @@ vanAllTestResult/
 vanAllTest/
 swinTest/
 swinResult/
-
+mymetric/
 
 # Pytorch
 *.pth
