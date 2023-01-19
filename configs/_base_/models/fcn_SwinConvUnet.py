@@ -42,7 +42,21 @@ model = dict(
         num_classes=4,
         norm_cfg=norm_cfg,
         align_corners=False,
-        sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
+        # sampler=dict(type='OHEMPixelSampler', thresh=0.7, min_kept=100000),
+        loss_decode=[
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+    auxiliary_head=dict(
+        type='FCNHead',
+        in_channels=192,
+        in_index=1,
+        channels=256,
+        num_convs=1,
+        concat_input=False,
+        dropout_ratio=0.1,
+        num_classes=4,
+        norm_cfg=norm_cfg,
+        align_corners=False,
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
