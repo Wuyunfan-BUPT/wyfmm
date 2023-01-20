@@ -30,6 +30,10 @@ from .swinL_convR_unet2 import SwinConvUnet2
 from .swin_conv1 import SwinTransformer1
 from .swin_conv2 import SwinTransformer2
 from .swinL_convR_unet0 import SwinConvUnet0
+from .swinP import SwinTransformerP
+from .swinPure import SwinTransformerPure
+from .swinPureConv import SwinTransformerPureUnet
+
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
     'ResNeSt', 'MobileNetV2', 'UNet', 'CGNet', 'MobileNetV3',
@@ -37,5 +41,6 @@ __all__ = [
     'BiSeNetV1', 'BiSeNetV2', 'ICNet', 'TIMMBackbone', 'ERFNet', 'PCPVT',
     'SVT', 'STDCNet', 'STDCContextPathNet', 'BEiT', 'MAE', 'SwinConvUnet',
     'convSwinUnet', 'VANUnet', 'UNet_re', 'VAN', 'SwinConvUnet1', 'SwinConvUnet2',
-    'SwinTransformer1','SwinTransformer2', 'SwinConvUnet0'
+    'SwinTransformer1','SwinTransformer2', 'SwinConvUnet0', 'SwinTransformerP',
+    'SwinTransformerPure', 'SwinTransformerPureUnet'
 ]
