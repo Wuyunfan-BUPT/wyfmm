@@ -56,7 +56,8 @@ class UpConvBlock(nn.Module):
                  act_cfg=dict(type='ReLU'),
                  upsample_cfg=dict(type='InterpConv'),
                  dcn=None,
-                 plugins=None):
+                 plugins=None,
+                 change=None):
         super(UpConvBlock, self).__init__()
         assert dcn is None, 'Not implemented yet.'
         assert plugins is None, 'Not implemented yet.'
@@ -83,7 +84,7 @@ class UpConvBlock(nn.Module):
                 act_cfg=act_cfg)
         else:
             self.upsample = ConvModule(
-                in_channels,
+                in_channels if change is None else change,
                 skip_channels,
                 kernel_size=1,
                 stride=1,
