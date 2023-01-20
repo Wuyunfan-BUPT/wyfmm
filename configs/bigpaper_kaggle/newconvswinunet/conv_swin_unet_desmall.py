@@ -1,5 +1,5 @@
 _base_ = [
-    '../../_base_/models/conv_swin_unet.py', '../../_base_/datasets/brats2020_zcross_kaggle.py',
+    '../../_base_/models/conv_swin_unet.py', '../../_base_/datasets/brats2020_zcrossp_kaggle.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 # '../../_base_/datasets/bratsIndividual4C.py',
