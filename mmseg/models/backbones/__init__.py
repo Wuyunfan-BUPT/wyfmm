@@ -36,6 +36,8 @@ from .swinPureConv import SwinTransformerPureUnet
 from .swinPureConv1 import SwinTransformerPureUnet1
 from .swinPureConv2 import SwinTransformerPureUnet2
 from .swinPureConv3 import SwinTransformerPureUnet3
+from .SwinTransformer4 import SwinTransformer4
+from .P_swin import P_SwinTransformer
 
 __all__ = [
     'ResNet', 'ResNetV1c', 'ResNetV1d', 'ResNeXt', 'HRNet', 'FastSCNN',
@@ -46,5 +48,6 @@ __all__ = [
     'convSwinUnet', 'VANUnet', 'UNet_re', 'VAN', 'SwinConvUnet1', 'SwinConvUnet2',
     'SwinTransformer1','SwinTransformer2', 'SwinConvUnet0', 'SwinTransformerP',
     'SwinTransformerPure', 'SwinTransformerPureUnet', 'SwinTransformerPureUnet1',
-    'SwinTransformerPureUnet2', 'SwinTransformerPureUnet3'
+    'SwinTransformerPureUnet2', 'SwinTransformerPureUnet3', 'SwinTransformer4',
+    'P_swin'
 ]
