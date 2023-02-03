@@ -1,5 +1,5 @@
 _base_ = [
-    '../../_base_/models/deeplab_SwinConvUnet.py', '../../_base_/datasets/bratsIndividual4C.py',
+    '../../_base_/models/fcn_r50-d8.py', '../../_base_/datasets/bratsIndividual4C_kaggle.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 checkpoint_file = r'C:\work\pyCharm\swinTransformer\swin_tiny_patch4_window7_224.pth'  # noqa
@@ -13,7 +13,7 @@ model = dict(
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
         patch_norm=True),
-    decode_head=dict(in_channels=64, num_classes=4))
+    decode_head=dict(in_channels=768, num_classes=4))
     #decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=4),
     #auxiliary_head=dict(in_channels=384, num_classes=150))
 

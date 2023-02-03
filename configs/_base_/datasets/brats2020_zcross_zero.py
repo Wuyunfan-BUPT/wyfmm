@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDataset2020'
-data_root = 'data/bratsDataSet2020'
+data_root = 'data/bratsDataSet2020_zcross_zero'
 crop_size = (224, 224)
 #crop_size = (192, 192)
 classes = ('BG', 'WT', 'TC', 'ET')

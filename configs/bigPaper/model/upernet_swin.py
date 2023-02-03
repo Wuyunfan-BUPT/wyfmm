@@ -1,6 +1,6 @@
 _base_ = [
     '../../_base_/models/upernet_swin.py', '../../_base_/datasets/bratsIndividual4C.py',
-    '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k.py'
+    '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 # '../../_base_/datasets/bratsIndividual4C.py',
 checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_tiny_patch4_window7_224_20220317-1cdeb081.pth'  # noqa
@@ -43,4 +43,4 @@ lr_config = dict(
     by_epoch=False)
 
 # By default, models are trained on 8 GPUs with 2 images per GPU
-data = dict(samples_per_gpu=8)
+data = dict(samples_per_gpu=2)

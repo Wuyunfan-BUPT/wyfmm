@@ -25,11 +25,11 @@ model = dict(
         act_cfg=dict(type='GELU'),
         norm_cfg=backbone_norm_cfg),
     decode_head=dict(
-        type='UPerHead',
-        in_channels=[32, 64, 96, 192],
-        in_index=[0, 1, 2, 3],
-        pool_scales=(1, 2, 3, 6),
-        channels=96,
+        type='ASPPHead',
+        in_channels=32,
+        in_index=0,
+        channels=16,
+        dilations=(1, 12, 24, 36),
         dropout_ratio=0.1,
         num_classes=4,
         norm_cfg=norm_cfg,
@@ -37,6 +37,8 @@ model = dict(
         loss_decode=[
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
             dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+
+
     # model training and testing settings
     train_cfg=dict(),
     test_cfg=dict(mode='whole'))

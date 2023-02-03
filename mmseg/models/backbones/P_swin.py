@@ -463,7 +463,7 @@ class SwinBlockSequence(BaseModule):
 
 
 @BACKBONES.register_module()
-class SwinTransformer(BaseModule):
+class P_SwinTransformer(BaseModule):
     """Swin Transformer backbone.
 
     This backbone is the implementation of `Swin Transformer:
@@ -561,7 +561,7 @@ class SwinTransformer(BaseModule):
         else:
             raise TypeError('pretrained must be a str or None')
 
-        super(SwinTransformer, self).__init__(init_cfg=init_cfg)
+        super(P_SwinTransformer, self).__init__(init_cfg=init_cfg)
 
         num_layers = len(depths)
         self.out_indices = out_indices
@@ -636,7 +636,7 @@ class SwinTransformer(BaseModule):
 
     def train(self, mode=True):
         """Convert the model into training mode while keep layers freezed."""
-        super(SwinTransformer, self).train(mode)
+        super(P_SwinTransformer, self).train(mode)
         self._freeze_stages()
 
     def _freeze_stages(self):
@@ -736,8 +736,6 @@ class SwinTransformer(BaseModule):
             load_state_dict(self, state_dict, strict=False, logger=logger)
 
     def forward(self, x):
-        # a = x.cpu()
-        # a = np.asarray(a)
         x, hw_shape = self.patch_embed(x)
 
         if self.use_abs_pos_embed:
