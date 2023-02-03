@@ -1,21 +1,23 @@
 _base_ = [
-    '../../_base_/models/deeplab_SwinConvUnet.py', '../../_base_/datasets/bratsIndividual4C.py',
+    '../../_base_/models/conv_swin_unet2.py', '../../_base_/datasets/brats2020.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
-checkpoint_file = r'C:\work\pyCharm\swinTransformer\swin_tiny_patch4_window7_224.pth'  # noqa
+# '../../_base_/datasets/bratsIndividual4C.py',
+checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/swin/swin_tiny_patch4_window7_224_20220317-1cdeb081.pth'  # noqa
 model = dict(
     backbone=dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
-        embed_dims=96,
+        embed_dims=192,
         depths=[2, 2, 6, 2],
         num_heads=[3, 6, 12, 24],
+        patch_size=4,
         window_size=7,
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
         patch_norm=True),
-    decode_head=dict(in_channels=64, num_classes=4))
-    #decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=4),
-    #auxiliary_head=dict(in_channels=384, num_classes=150))
+    # decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=4),
+    # auxiliary_head=dict(in_channels=384, num_classes=4)
+    )
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
@@ -27,7 +29,6 @@ optimizer = dict(
     weight_decay=0.01,
     paramwise_cfg=dict(
         custom_keys={
-            'head': dict(lr_mult=10.),
             'absolute_pos_embed': dict(decay_mult=0.),
             'relative_position_bias_table': dict(decay_mult=0.),
             'norm': dict(decay_mult=0.)

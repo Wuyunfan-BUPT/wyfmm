@@ -1,6 +1,6 @@
 # dataset settings
 dataset_type = 'BratsDataset2020'
-data_root = 'data/bratsDataSet2020'
+data_root = 'data/bratsDataSet2020_zcross'
 crop_size = (224, 224)
 #crop_size = (192, 192)
 classes = ('BG', 'WT', 'TC', 'ET')
@@ -14,7 +14,7 @@ train_pipeline = [
     #dict(type='Resize', img_scale=crop_size, ratio_range=(0.5, 2.0)),
     #dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
     #dict(type='Normalize', **img_norm_cfg),
-    dict(type='RandomFlip', prob=0.5),
+    # dict(type='RandomFlip', prob=0.5),
     #dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=0),
     dict(type='DefaultFormatBundle'),
     dict(type='Collect', keys=['img', 'gt_semantic_seg'])
@@ -29,7 +29,7 @@ test_pipeline = [
         flip=False,
         transforms=[
             #dict(type='Resize', keep_ratio=True),
-            dict(type='RandomFlip'),
+            #dict(type='RandomFlip'),
             #dict(type='Normalize', **img_norm_cfg),
             #dict(type='Pad', size=crop_size, pad_val=0, seg_pad_val=0),
             dict(type='ImageToTensor', keys=['img']),
