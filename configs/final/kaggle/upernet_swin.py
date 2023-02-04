@@ -1,5 +1,5 @@
 _base_ = [
-    '../../_base_/models/P_upernet_swin.py',  '../../_base_/datasets/brats2020.py',
+    '../../_base_/models/P_upernet_swin.py',  '../../_base_/datasets/brats2020_zcross_kaggle.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 # '../../_base_/datasets/bratsIndividual4C.py',
@@ -14,7 +14,7 @@ model = dict(
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
         patch_norm=True),
-    decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=4,channels=256))
+    decode_head=dict(in_channels=[96, 192, 384, 768], num_classes=4,channels=256),)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
