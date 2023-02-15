@@ -20,7 +20,9 @@ model = dict(
         patch_norm=True),
     decode_head=dict(in_channels=[64, 128, 256, 512], num_classes=4, in_index=[0, 1, 2, 3],
         pool_scales=(1, 2, 3, 6),
-        channels=256),)
+        channels=256),
+    auxiliary_head=dict(in_channels=256, num_classes=4)
+)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
