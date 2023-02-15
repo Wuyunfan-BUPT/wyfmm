@@ -7,19 +7,19 @@ checkpoint_file = 'https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/s
 model = dict(
     backbone=dict(
         init_cfg=dict(type='Pretrained', checkpoint=checkpoint_file),
-        embed_dims=32,
+        embed_dims=64,
         patch_size=2,
         mlp_ratio=4,
-        depths=[2, 2, 4, 8, 2],
-        num_heads=[2, 4, 8, 16, 32],
-        strides=(2, 2, 2, 2, 2),
-        out_indices=(0, 1, 2, 3, 4),
+        depths=[2, 2, 6, 2],
+        num_heads=[4, 8, 16, 32],
+        strides=(2, 2, 2, 2),
+        out_indices=(0, 1, 2, 3),
         window_size=7,
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
         patch_norm=True),
-    decode_head=dict(in_channels=[32, 64, 128, 256, 512], num_classes=4, in_index=[0, 1, 2, 3, 4],
-        pool_scales=(1, 2, 3, 6, 9),
+    decode_head=dict(in_channels=[64, 128, 256, 512], num_classes=4, in_index=[0, 1, 2, 3],
+        pool_scales=(1, 2, 3, 6),
         channels=256),)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
