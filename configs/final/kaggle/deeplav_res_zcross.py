@@ -1,5 +1,5 @@
 _base_ = [
-    '../../_base_/models/deeplabv3_r50_zcross.py', '../../_base_/datasets/brats2020_zcross_kaggle.py',
+    '../../_base_/models/deeplabv3_r50_zcross.py', '../../_base_/datasets/brats2020_zcrossP_kaggle.py',
     '../../_base_/default_runtime.py', '../../_base_/schedules/schedule_160k_dice.py'
 ]
 
