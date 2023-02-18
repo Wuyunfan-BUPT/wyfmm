@@ -13,7 +13,24 @@ model = dict(
         window_size=7,
         use_abs_pos_embed=False,
         drop_path_rate=0.3,
-        patch_norm=True),)
+        patch_norm=True),
+    neck=dict(
+        type='FPN',
+        in_channels=[96, 192, 384],
+        out_channels=96,
+        num_outs=4),
+    decode_head=dict(
+        type='FPNHead',
+        in_channels=[96, 96, 96],
+        in_index=[0, 1, 2],
+        feature_strides=[4, 8, 16],
+        align_corners=False,
+        loss_decode=[
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_name='loss_ce', loss_weight=1.0),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)]),
+
+
+)
 
 # AdamW optimizer, no weight decay for position embedding & layer norm
 # in backbone
