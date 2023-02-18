@@ -12,6 +12,7 @@ model = dict(
         num_heads=[3, 6, 12],
         window_size=7,
         use_abs_pos_embed=False,
+        out_indices=(0, 1, 2),
         drop_path_rate=0.3,
         patch_norm=True),
     neck=dict(
